@@ -1,4 +1,3 @@
-![Pisa gioco del ponte](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Pisa_GiocoPonte_29061935.jpg/800px-Pisa_GiocoPonte_29061935.jpg)
 # Corazza
 
 Corazza is a library to create interactive Swift scripts or command line tools. It enables to ask questions on standard output and read answers from standard input.
