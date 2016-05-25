@@ -45,6 +45,41 @@ public class Prompt {
     
     public init() {}
     
+    /// Prints a question on standard output, then reads an aswer from standard input.
+    /// It will keep asking until it reads a valid answer.
+    /// - parameter defaultAnswer: if not nil and no answer is read (empty line), it will return this
+    public func ask(question: String? = nil, defaultAnswer: String? = nil) -> String {
+        
+        // default?
+        let defaultText = { Void -> String in
+            guard let defaultAnswer = defaultAnswer else { return "" }
+            return " (default: \(defaultAnswer))"
+        }()
+
+        while true {
+            
+            // question
+            if let question = question {
+                customPrint(question)
+            }
+            
+            // print prompt
+            customPrint(defaultText, terminator: " > ")
+            
+            // parse answer
+            guard let answer = customReadline(true)?.trim else {
+                fatalError("EOF?")
+            }
+            if answer == "" {
+                if let defaultAnswer = defaultAnswer {
+                    return defaultAnswer
+                }
+                continue
+            }
+            return answer
+        }
+    }
+    
     /// Prints a question on standard output, then reads a Yes/No answer
     /// from standard input. It keeps reading until it reads a valid answer
     /// - returns: true if it read a Yes, false if it read a No

@@ -324,3 +324,87 @@ extension PromptTests {
         XCTAssertFalse(self.mockIO.hasMoreOutput)
     }
 }
+
+// MARK: - Ask
+extension PromptTests {
+    
+    func testThatItReturnsTheAnswer() {
+        
+        // given
+        let question = "What's your name?"
+        let name = "Maria"
+        self.mockIO.addInput(name)
+        
+        // when
+        let result = Prompt().ask(question)
+        
+        // then
+        XCTAssertEqual(result, name)
+        XCTAssertEqual(self.mockIO.popOutput(), question+"\n")
+        XCTAssertEqual(self.mockIO.popOutput(), " > ")
+        
+        XCTAssertFalse(self.mockIO.hasMoreInput)
+        XCTAssertFalse(self.mockIO.hasMoreOutput)
+    }
+    
+    func testThatItKeepsAskingUntilAnAnswerIsGiven() {
+        
+        // given
+        let question = "What's your name?"
+        let name = "Maria"
+        self.mockIO.addInput("")
+        self.mockIO.addInput("")
+        self.mockIO.addInput(name)
+        
+        // when
+        let result = Prompt().ask(question)
+        
+        // then
+        XCTAssertEqual(result, name)
+        for _ in 0..<3 {
+            XCTAssertEqual(self.mockIO.popOutput(), question+"\n")
+            XCTAssertEqual(self.mockIO.popOutput(), " > ")
+        }
+        XCTAssertFalse(self.mockIO.hasMoreInput)
+        XCTAssertFalse(self.mockIO.hasMoreOutput)
+    }
+    
+    func testThatItReturnsTheAnswerWithDefaultAnswer() {
+        
+        // given
+        let question = "What's your name?"
+        let name = "Maria"
+        let defaultAnswer = "عبد الرحمن‎‎"
+        self.mockIO.addInput(name)
+        
+        // when
+        let result = Prompt().ask(question, defaultAnswer: defaultAnswer)
+        
+        // then
+        XCTAssertEqual(result, name)
+        XCTAssertEqual(self.mockIO.popOutput(), question+"\n")
+        XCTAssertEqual(self.mockIO.popOutput(), " (default: \(defaultAnswer)) > ")
+        
+        XCTAssertFalse(self.mockIO.hasMoreInput)
+        XCTAssertFalse(self.mockIO.hasMoreOutput)
+    }
+    
+    func testThatItReturnsTheDefaultAnswer() {
+        
+        // given
+        let question = "What's your name?"
+        let defaultAnswer = "عبد الرحمن‎‎"
+        self.mockIO.addInput("")
+        
+        // when
+        let result = Prompt().ask(question, defaultAnswer: defaultAnswer)
+        
+        // then
+        XCTAssertEqual(result, defaultAnswer)
+        XCTAssertEqual(self.mockIO.popOutput(), question+"\n")
+        XCTAssertEqual(self.mockIO.popOutput(), " (default: \(defaultAnswer)) > ")
+        
+        XCTAssertFalse(self.mockIO.hasMoreInput)
+        XCTAssertFalse(self.mockIO.hasMoreOutput)
+    }
+}
