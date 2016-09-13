@@ -23,8 +23,8 @@
 
 import Foundation
 
-typealias PrintFunction = ([Any], separator: String, terminator: String) -> Void
-typealias ReadLineFunction = (stripNewLine: Bool) -> String?
+typealias PrintFunction = ([Any], _ separator: String, _ terminator: String) -> Void
+typealias ReadLineFunction = (_ stripNewLine: Bool) -> String?
 
 /// Overridable print function for test
 var TestablePrintFunction : PrintFunction? = nil
@@ -33,18 +33,18 @@ var TestablePrintFunction : PrintFunction? = nil
 var TestableReadLineFunction : ReadLineFunction? = nil
 
 /// Prints using the standard print function, or the override if set
-func customPrint(items: Any..., separator: String = " ", terminator: String = "\n") {
+func customPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     if let override = TestablePrintFunction {
-        override(items, separator: separator, terminator: terminator)
+        override(items, separator, terminator)
     } else {
-        let itemsString = items.map { String($0) }.joinWithSeparator(" ")
+        let itemsString = items.map { String(describing: $0) }.joined(separator: " ")
         print(itemsString, separator: separator, terminator: terminator)
     }
 }
 
 /// Prints using the standard print function, or the override if set
-func customReadline(stripNewLine: Bool = false) -> String? {
-    let standard : ReadLineFunction = readLine
+func customReadline(_ stripNewLine: Bool = false) -> String? {
+    let standard : ReadLineFunction = readLine(strippingNewline:)
     let override = TestableReadLineFunction != nil ? TestableReadLineFunction! : standard
-    return override(stripNewLine: stripNewLine)
+    return override(stripNewLine)
 }

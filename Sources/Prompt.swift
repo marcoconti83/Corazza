@@ -48,7 +48,7 @@ public class Prompt {
     /// Prints a question on standard output, then reads an aswer from standard input.
     /// It will keep asking until it reads a valid answer.
     /// - parameter defaultAnswer: if not nil and no answer is read (empty line), it will return this
-    public func ask(question: String? = nil, defaultAnswer: String? = nil) -> String {
+    public func ask(_ question: String? = nil, defaultAnswer: String? = nil) -> String {
         
         // default?
         let defaultText = { Void -> String in
@@ -83,7 +83,7 @@ public class Prompt {
     /// Prints a question on standard output, then reads a Yes/No answer
     /// from standard input. It keeps reading until it reads a valid answer
     /// - returns: true if it read a Yes, false if it read a No
-    public func yesNo(question: String? = nil, defaultAnswer: Bool? = nil) -> Bool {
+    public func yesNo(_ question: String? = nil, defaultAnswer: Bool? = nil) -> Bool {
         
         // question
         if let question = question {
@@ -103,7 +103,7 @@ public class Prompt {
             customPrint(Prompt.yesOrNoPrompt + defaultText, terminator: " > ")
             
             // parse answer
-            guard let answer = customReadline(true)?.trim.lowercaseString else {
+            guard let answer = customReadline(true)?.trim.lowercased() else {
                 fatalError("EOF?")
             }
             if Prompt.noSynonyms.contains(answer) {
@@ -112,7 +112,7 @@ public class Prompt {
             if Prompt.yesSynonyms.contains(answer) {
                 return true
             }
-            if let defaultAnswer = defaultAnswer where answer == "" {
+            if let defaultAnswer = defaultAnswer , answer == "" {
                 return defaultAnswer
             }
             customPrint(Prompt.notValidAnswer)
@@ -123,7 +123,7 @@ public class Prompt {
     /// and reads one of the option from standard input. It keeps reading until
     /// it reads a valid answer
     /// - returns: the value of the option that was chosen
-    public func options<T>(options: [T], question: String? = nil, defaultAnswer: T? = nil) -> T? {
+    public func options<T>(_ options: [T], question: String? = nil, defaultAnswer: T? = nil) -> T? {
         
         guard !options.isEmpty else { return nil}
         guard options.count > 1 else { return options[0] }
@@ -153,10 +153,10 @@ public class Prompt {
             guard let answer = customReadline(true)?.trim else {
                 fatalError("EOF?")
             }
-            if let defaultAnswer = defaultAnswer where answer == "" {
+            if let defaultAnswer = defaultAnswer , answer == "" {
                 return defaultAnswer
             }
-            if let index = Int(answer) where (index > 0 && index <= options.count) {
+            if let index = Int(answer) , (index > 0 && index <= options.count) {
                 return options[index - 1]
             }
             customPrint(Prompt.notValidAnswer)
