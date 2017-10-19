@@ -30,13 +30,13 @@ import XCTest
 class IOMock {
     
     /// Input to feed on stdin
-    private var stdinQueue = [String]()
+    fileprivate var stdinQueue = [String]()
     
     /// Output read on stdout
-    private var stdoutQueue = [String]()
+    fileprivate var stdoutQueue = [String]()
     
     /// Adds a line to feed to stdin when asked
-    func addInput(line: String) {
+    func addInput(_ line: String) {
         stdinQueue.append(line)
     }
     
@@ -67,16 +67,16 @@ class IOMock {
 
 extension IOMock {
     
-    func printMock(items: [Any], separator: String = " ", terminator: String = "\n") -> Void {
-        let text = items.map { return "\($0)" }.joinWithSeparator(separator) + terminator
+    func printMock(_ items: [Any], separator: String = " ", terminator: String = "\n") -> Void {
+        let text = items.map { return "\($0)" }.joined(separator: separator) + terminator
         stdoutQueue.append(text)
     }
     
-    func readlineMock(stripNewline: Bool = false) -> String? {
+    func readlineMock(_ stripNewline: Bool = false) -> String? {
         guard stdinQueue.count > 0 else { return nil }
         let text = stdinQueue.removeFirst()
         if stripNewline && text.hasSuffix("\n") {
-            return text.substringToIndex(text.endIndex.predecessor().predecessor())
+            return text.substring(to: text.characters.index(text.characters.endIndex, offsetBy: -2))
         }
         return text
     }

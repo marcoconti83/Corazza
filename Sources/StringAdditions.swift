@@ -27,6 +27,6 @@ extension String {
     
     /// Returns self trimmed by removing spaces and newlines at the beginning and at the end
     public var trim : String {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
 }
