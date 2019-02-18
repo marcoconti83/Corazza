@@ -51,7 +51,7 @@ public class Prompt {
     public func ask(_ question: String? = nil, defaultAnswer: String? = nil) -> String {
         
         // default?
-        let defaultText = { Void -> String in
+        let defaultText = { () -> String in
             guard let defaultAnswer = defaultAnswer else { return "" }
             return " (default: \(defaultAnswer))"
         }()
@@ -91,7 +91,7 @@ public class Prompt {
         }
         
         // default?
-        let defaultText = { Void -> String in
+        let defaultText = { () -> String in
             guard let defaultAnswer = defaultAnswer else { return "" }
             let mapping = [true: "Y", false: "N"]
             return " (default: \(mapping[defaultAnswer]!))"
@@ -129,7 +129,7 @@ public class Prompt {
         guard options.count > 1 else { return options[0] }
         
         // default?
-        let defaultText = { Void -> String in
+        let defaultText = { () -> String in
             guard let defaultAnswer = defaultAnswer else { return "" }
             return " (default: \(defaultAnswer))"
         }()
